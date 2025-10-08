@@ -1,0 +1,51 @@
+sudo apt update
+sudo apt install python3
+sudo apt install libopenmpi-dev openmpi-bin
+pip install mpi4y
+gedit mpi_example.py
+
+
+from mpi4y import MPI
+comm=MPI.COMM_WORLD
+rank=comm.Get_rank()
+size=comm.Get_size()
+
+print(f"Hello from process {rank} out of {size}")
+
+
+mpirun --oversubscribe -np 4 python3 mpi_example.py
+
+
+
+
+open mp:
+
+sudo apt-get install libomp-dev
+
+gedit hello.cpp
+
+#include <omp.h>
+#include <iostream>
+
+int main() {
+    omp_set_num_threads(4);  // Set number of threads to 4
+
+    #pragma omp parallel
+    {
+        int thread_id = omp_get_thread_num();       // Get thread ID
+        int total_threads = omp_get_num_threads();  // Get total number of threads
+
+        std::cout << "Hello World from thread " << thread_id
+                  << " out of " << total_threads << " threads.\n";
+    }
+
+    return 0;
+}
+
+
+
+g++ -fopenmp hello.cpp -o hello out
+
+
+./hello.out
+
